@@ -1,4 +1,4 @@
-package hw03;
+
 
 /**
  * An implementation of the CS132List interface backed with an array of Objects.
@@ -143,5 +143,13 @@ public class CS232ArrayList<E> implements CS232List<E> {
 
             return elem;
         }
+    }
+
+    public static void main(String[] args){
+        CS232ArrayList<String> array = new CS232ArrayList<>();
+        array.add("hi");
+        System.out.println(array.size());
+        System.out.println(array.get(0));
+
     }
 }
