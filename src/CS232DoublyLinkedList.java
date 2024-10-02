@@ -1,4 +1,3 @@
-package hw03;
 
 /**
  * Doubly linked list implementation of the CS232List interface.
@@ -114,8 +113,15 @@ public class CS232DoublyLinkedList<E> implements CS232List<E> {
 	 * {@inheritDoc}
 	 */
 	public E remove(int index) throws IndexOutOfBoundsException {
-		// Intentionally not implemented.
-		return null;
+		
+		DLLNode node = getNode(index);
+		DLLNode prev = node.prev;
+		DLLNode next = node.next;
+
+		prev.next = next;
+		next.prev = prev;
+
+		return node.element;
 	}
 
 	/**
@@ -128,7 +134,8 @@ public class CS232DoublyLinkedList<E> implements CS232List<E> {
 	 *             if index < 0 or index >= size()
 	 */
 	public void clearTo(int index) throws IndexOutOfBoundsException {
-		// Intentionally not implemented.
+		DLLNode node = getNode(index+1);
+		node.prev = null;
 	}
 
 	/**
@@ -149,7 +156,26 @@ public class CS232DoublyLinkedList<E> implements CS232List<E> {
 	 */
 	public void addAllAt(int index, CS232DoublyLinkedList<E> list)
 			throws IndexOutOfBoundsException {
-		// Intentionally not implemented.
+				if (list.size == 0) {
+					throw new IllegalArgumentException("The list is empty.");
+				}
+				if (index < 0 || index > size()) {
+					throw new IndexOutOfBoundsException("Index out of bounds.");
+				}
+
+				if(this.size() == 0){
+					this.head = list.head;
+					this.tail = list.tail;
+				}
+				else{
+					DLLNode last = getNode(index-1);
+					//DLLNode newNode = list.getNode(0);
+
+					last.next = list.head;
+					list.head.prev = last;
+
+				}
+
 	}
 
 	/*
