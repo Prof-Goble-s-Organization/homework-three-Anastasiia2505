@@ -1,3 +1,4 @@
+import org.junit.Test;
 
 /**
  * Doubly linked list implementation of the CS232List interface.
@@ -188,23 +189,44 @@ public class CS232DoublyLinkedList<E> implements CS232List<E> {
 				}
 				
 				if(index == 0) {
-//					list.head.next = head.next;
-//					head.next.prev = list.head;
-					this.head.next = list.head.next;
-					this.tail = list.tail;
-					size = list.size;
+					DLLNode start = list.head.next;
+					DLLNode node = head.next;
+					DLLNode end = list.tail.prev;
+					
+					
+					head.next = start;
+					start.prev = head;
+					
+					end.next = node;
+					node.prev = end;
+					size += list.size;
+				}
+				else if(index == size) {
+					DLLNode last = tail.prev;
+					DLLNode start = list.head.next;
+					DLLNode end = list.tail.prev;
+					
+					
+					last.next = start;
+					start.prev = last;
+					end.next = tail;
+					tail.prev = end;
+					
+					size += list.size;
 				}
 				else {
 					DLLNode last = getNode(index-1);
-					//DLLNode newNode = list.getNode(0);
-//					if(last.next == tail) {
-//						
-//					}
-
-					last.next = list.head.next;
-					list.head.next.prev = last;
-					tail = list.tail;
-					size = size - index - 1 + list.size;
+					DLLNode node = getNode(index);
+					DLLNode start = list.head.next;
+					DLLNode end = list.tail.prev;
+					
+					last.next = start;
+					start.prev = last;
+					
+					end.next = node;
+					node.prev = end;
+					
+					size += list.size;
 
 				}
 
@@ -255,5 +277,33 @@ public class CS232DoublyLinkedList<E> implements CS232List<E> {
 			}
 		}
 		return true;
+	}
+	
+	
+	public static void main(String args[]) {
+		CS232DoublyLinkedList<String> myList = new CS232DoublyLinkedList<String>();
+        myList.add("Test1");
+        myList.add("Test2");
+        myList.add("Test3");
+        myList.add("Test4");
+        myList.add("Test5");
+        
+        CS232DoublyLinkedList<String> addList = new CS232DoublyLinkedList<String>();
+    	addList.add("new1");
+    	addList.add("new2");
+    	addList.add("new3");
+    	myList.addAllAt(0, addList);
+    	
+    	System.out.println(myList.size());
+    	System.out.println(myList.checkListIntegrity());
+    	System.out.println(myList.get(0));
+    	System.out.println(myList.get(1));
+    	System.out.println(myList.get(2));
+    	System.out.println(myList.get(3));
+    	System.out.println(myList.get(4));
+    	System.out.println(myList.get(5));
+    	System.out.println(myList.get(6));
+    	System.out.println(myList.get(7));
+    	
 	}
 }
