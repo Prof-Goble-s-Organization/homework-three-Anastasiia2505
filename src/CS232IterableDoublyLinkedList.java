@@ -1,4 +1,5 @@
 
+import static org.junit.Assert.assertTrue;
 
 import java.util.NoSuchElementException;
 
@@ -157,12 +158,17 @@ public class CS232IterableDoublyLinkedList<E> implements CS232List<E>,
 	private class DLLIterator implements CS232Iterator<E> {
 
 		private DLLNode cursor;
+		private boolean canRemove;
 
 		public DLLIterator() {
 			cursor = head;
+			canRemove = false; 
 		}
 
 		public boolean hasNext() {
+			if(cursor == tail) {
+				return false;
+			}
 			return cursor.next != tail;
 		}
 
@@ -171,18 +177,32 @@ public class CS232IterableDoublyLinkedList<E> implements CS232List<E>,
 				throw new NoSuchElementException("There is no next element.");
 			} else {
 				cursor = cursor.next;
+				canRemove = true;
 				return cursor.element;
 			}
 		}
 
 		public boolean hasPrevious() {
-			// Intentionally not implemented, see HW assignment!
-			throw new UnsupportedOperationException("Not implemented");
+			if(cursor == head) {
+				return false;
+			}
+			else {
+				return cursor.prev != head;
+			}
 		}
 
 		public E previous() {
 			// Intentionally not implemented, see HW assignment!
-			throw new UnsupportedOperationException("Not implemented");
+			//throw new UnsupportedOperationException("Not implemented");
+			if(!hasPrevious()) {
+				throw new NoSuchElementException("There is no previous element.");
+			}
+
+			else {
+				cursor = cursor.prev;
+				canRemove = true;
+				return cursor.element;
+			}
 		}
 
 		public void insert(E element) {
@@ -191,11 +211,40 @@ public class CS232IterableDoublyLinkedList<E> implements CS232List<E>,
 			cursor.next = node;
 			cursor = node;
 			size++;
-		}
+		} 
 
 		public E remove() {
 			// Intentionally not implemented, see HW assignment!
-			throw new UnsupportedOperationException("Not implemented");
+			//throw new UnsupportedOperationException("Not implemented");
+			if (!canRemove) {
+		        throw new IllegalStateException("Cannot remove element before next() or previous() is called.");
+		    }
+			
+			DLLNode temp = cursor;
+			DLLNode next = cursor.next;
+			DLLNode prev = cursor.prev;
+			
+			
+			if (prev == head) {
+				head.next = next;
+				next.prev = head;
+				cursor = next;
+			}
+			else if (next == tail) {
+				prev.next = tail;
+				tail.prev = prev;
+				cursor = tail;
+			}
+			
+			else {
+				next.prev = prev;
+				prev.next = next;
+				cursor = next;
+			}
+			size--;
+			canRemove = false;
+			return temp.element;
+			
 		}
 	}
 	
@@ -225,4 +274,28 @@ public class CS232IterableDoublyLinkedList<E> implements CS232List<E>,
 		}
 		return true;
 	}
+	
+	public static void main(String[] args) {
+		CS232IterableDoublyLinkedList myList = new CS232IterableDoublyLinkedList<String>();
+		myList.add("one");
+		myList.add("two");
+		myList.add("three");
+		myList.add("four");
+		myList.add("five");
+		CS232Iterator<String> it = ((CS232Iterable<String>) myList).getIterator();
+
+		it.next(); //one
+		it.next(); //two
+		
+		while (it.hasNext()) {
+			it.next(); //five
+		}
+		for (int i = 0; i < myList.size()-1; i++) {
+			it.previous();
+		}
+		
+		System.out.println(it.next());
+		System.out.println(myList.checkListIntegrity());
+	
+}
 }

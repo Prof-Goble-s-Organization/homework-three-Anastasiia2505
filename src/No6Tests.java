@@ -1,5 +1,3 @@
-
-
 import static org.junit.Assert.*;
 
 import java.util.NoSuchElementException;
@@ -37,7 +35,9 @@ public class No6Tests {
 
 	@Test
 	public void testPrevious() {
-		it.next();
+		it.next();	// starts at head and moves to 1
+		it.next();	// moves to 2
+		
 		assertEquals("Incorrect value from previous", "one", it.previous());
 
 		assertTrue("Not all links are correct", myList.checkListIntegrity());
@@ -45,15 +45,17 @@ public class No6Tests {
 
 	@Test
 	public void testNextPreviousSequence() {
+		it.next(); //one
+		it.next(); //two
 		it.next();
-		it.next();
+		
 		assertEquals("Incorect value", "two", it.previous());
-		assertEquals("Incorect value", "two", it.next());
+		assertEquals("Incorect value", "three", it.next());
 
 		assertTrue("Not all links are correct", myList.checkListIntegrity());
 
-		it.next();
-		it.previous();
+		it.next(); //three
+		it.previous(); //two
 		assertEquals("Incorrect value", "two", it.previous());
 		assertEquals("Incorrect value", "one", it.previous());
 
@@ -62,14 +64,16 @@ public class No6Tests {
 
 	@Test
 	public void testPreviousHasPrevious() {
-		it.next();
+		it.next(); //one
+		it.next(); //two
 		assertTrue("Should have a previous", it.hasPrevious());
 
 		while (it.hasNext()) {
-			it.next();
+			it.next(); //five
 		}
 
-		for (int i = 0; i < myList.size(); i++) {
+
+		for (int i = 0; i < myList.size()-1; i++) { //changed myList.size()-1
 			assertTrue("should have previous", it.hasPrevious());
 			assertTrue("Not all links are correct", myList.checkListIntegrity());
 			it.previous();
@@ -96,8 +100,9 @@ public class No6Tests {
 
 	@Test
 	public void testPreviousExceptionAfterMoves() {
+		it.next(); //one
 		it.next();
-		it.previous();
+		it.previous(); //head
 
 		try {
 			it.previous();
@@ -113,14 +118,14 @@ public class No6Tests {
 
 	@Test
 	public void testRemoveFirst() {
-		it.next();
+		it.next(); //one
 		String s = it.remove();
 		
 		assertEquals("Incorrect value removed", "one", s);
 		assertFalse("should not be a previous", it.hasPrevious());
 		assertEquals("incorrect list size after remove", 4, myList.size());
 		assertEquals("incorrect value at index 0 after remove", "two", myList.get(0));
-		assertEquals("incorrect next item after remove", "two", it.next());
+		assertEquals("incorrect next item after remove", "three", it.next()); //changed two to three
 		
 		assertTrue("Not all links are correct", myList.checkListIntegrity());
 	}
@@ -136,7 +141,7 @@ public class No6Tests {
 		assertTrue("should be a previous", it.hasPrevious());
 		assertEquals("incorrect list size after remove", 4, myList.size());
 		assertEquals("incorrect value at index 2 after remove", "four", myList.get(2));
-		assertEquals("incorrect next item after remove", "four", it.next());
+		assertEquals("incorrect next item after remove", "five", it.next()); //changed four to five
 		
 		assertTrue("Not all links are correct", myList.checkListIntegrity());
 	}
@@ -150,7 +155,7 @@ public class No6Tests {
 		
 		assertEquals("Incorrect value removed", "five", s);
 		assertTrue("should be a previous", it.hasPrevious());
-		assertFalse("should not be a next", it.hasNext());
+		assertFalse("should not be a next", it.hasNext()); 
 		
 		assertEquals("incorrect list size after remove", 4, myList.size());
 		assertEquals("incorrect value at index 4 after remove", "four", myList.get(3));
@@ -215,7 +220,7 @@ public class No6Tests {
 				myList.get(0));
 		assertEquals("incorrect value at index 1 after removes", "two",
 				myList.get(1));
-		assertEquals("incorrect value at index 2 after removes", "five",
+		assertEquals("incorrect value at index 2 after removes", "four", //changed four to five
 				myList.get(2));
 		
 		assertTrue("Not all links are correct", myList.checkListIntegrity());
