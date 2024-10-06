@@ -1,5 +1,3 @@
-package hw03;
-
 import static org.junit.Assert.*;
 
 import java.util.Random;
@@ -279,6 +277,7 @@ public class No5Tests {
     	
         assertTrue("Not all links are correct", myList.checkListIntegrity());
     }
+    
     
     @Test
     public void testAddAllIllegalIndex() {

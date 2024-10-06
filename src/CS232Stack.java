@@ -1,4 +1,4 @@
-package hw03;
+
 
 /**
  * Generic interface specifying a Stack ADT.
@@ -14,7 +14,7 @@ public interface CS232Stack<E> {
      * 
      * @param obj the element to push onto the stack.
      */
-    public void push(E obj);
+    public void push(E element);
 
     /**
      * Remove the element from of the top of the stack and return it.

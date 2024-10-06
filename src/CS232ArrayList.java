@@ -1,4 +1,6 @@
-package hw03;
+import static org.junit.Assert.assertTrue;
+
+import java.util.NoSuchElementException;
 
 /**
  * An implementation of the CS132List interface backed with an array of Objects.
@@ -143,5 +145,90 @@ public class CS232ArrayList<E> implements CS232List<E> {
 
             return elem;
         }
+    }
+    
+    private class ArrayListIterator implements CS232Iterator<E>{
+    	
+    	private int cursorIndex;
+    	
+  
+		@Override
+		public boolean hasNext() {
+			if(cursorIndex == currentSize) {
+				return false;
+			}
+			else {
+				return listElements[cursorIndex+1] != null;
+			}
+		}
+
+		@Override
+		public E next() {
+			if(!hasNext()) {
+				throw new NoSuchElementException("There is no next element.");
+			}
+			cursorIndex += 1;
+			return get(cursorIndex);
+		}
+
+		@Override
+		public boolean hasPrevious() {
+			if(cursorIndex == 0) {
+				return false;
+			}
+			else {
+				return listElements[cursorIndex-1] != null;
+			}
+		}
+
+		@Override
+		public E previous() {
+			if(!hasPrevious()) {
+				throw new NoSuchElementException("There is no previous element.");
+			}
+			else {
+				cursorIndex -= 1;
+				return get(cursorIndex);
+			}
+		}
+
+		@Override
+		public void insert(E element) {
+			throw new UnsupportedOperationException();
+			
+		}
+
+		@Override
+		public E remove() {
+			throw new UnsupportedOperationException();
+		}
+    	
+    }
+    public CS232Iterator<E> getIterator() {
+		return new ArrayListIterator();
+	}
+
+    public static void main(String[] args){
+        CS232ArrayList<String> array = new CS232ArrayList<>();
+        CS232Iterator<String> it = array.getIterator();
+        
+        array.add("one");
+        array.add("two");
+        array.add("three");
+        array.add("four");
+        array.add("five");
+        
+//        it.next();
+        
+        
+//        
+//        System.out.println(array.size());
+//        System.out.println(array.get(0));
+//        System.out.println(it.next());
+        for (int i=0; i < array.size()-1; i++) {
+			assertTrue("should have next", it.hasNext());
+			it.next();
+    }
+        System.out.println(it.previous());
     }
 }
