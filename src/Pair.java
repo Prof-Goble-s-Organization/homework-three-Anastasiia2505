@@ -31,6 +31,8 @@ public class Pair <T1, T2> {
         Pair<Pair, Pair> pairPair = new Pair<>(intPair, mixPair); 
         System.out.println(intPair.getFirst());
         System.out.println(mixPair.getSecond());
+        System.out.println(intPair);
+        System.out.println(mixPair);
         System.out.println(pairPair.getFirst());
         System.out.println(pairPair.getSecond());
     }
