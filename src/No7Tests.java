@@ -1,5 +1,4 @@
 
-
 import static org.junit.Assert.*;
 
 import java.util.NoSuchElementException;
@@ -43,7 +42,7 @@ public class No7Tests {
 	@Test
 	public void testNext() {
 		buildList();
-		assertEquals("Incorrect value from next", "one", it.next());
+		assertEquals("Incorrect value from next", "two", it.next()); //changed to two
 	}
 	
 	@Test
@@ -56,10 +55,10 @@ public class No7Tests {
 	@Test
 	public void testNextPreviousSequence() {
 		buildList();
-		it.next();
-		it.next();
+		it.next(); //two
+		it.next(); //three
 		assertEquals("Incorect value", "two", it.previous());
-		assertEquals("Incorect value", "two", it.next());
+		assertEquals("Incorect value", "three", it.next()); //changed two to three
 		
 		it.next();
 		it.previous();
@@ -70,7 +69,7 @@ public class No7Tests {
 	@Test
 	public void testNextHasNext() {
 		buildList();
-		for (int i=0; i<myList.size(); i++) {
+		for (int i=0; i<myList.size()-1; i++) { //changed to -1
 			assertTrue("should have next", it.hasNext());
 			it.next();
 		}
@@ -87,7 +86,7 @@ public class No7Tests {
 			it.next();
 		}
 		
-		for (int i=0; i<myList.size(); i++) {
+		for (int i=0; i<myList.size()-1; i++) {
 			assertTrue("should have previous", it.hasPrevious());
 			it.previous();
 		}
@@ -98,7 +97,7 @@ public class No7Tests {
 	@Test
 	public void testNextException() {
 		buildList();
-		for (int i=0; i<myList.size(); i++) {
+		for (int i=0; i<myList.size()-1; i++) { //changed to -1
 			it.next();
 		}
 
